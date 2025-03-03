@@ -72,6 +72,7 @@ def show_dev_info():
     table.add_row("⚡ GitHub: [link]https://github.com/0xStarLabs[/link]")
     table.add_row("👤 Dev: [link]https://t.me/StarLabsTech[/link]")
     table.add_row("💬 Chat: [link]https://t.me/StarLabsChat[/link]")
+    table.add_row("汉化form：[link]https://x.com/oxbaboon[/link]")
     table.add_row("")
 
     # Выводим таблицу с отступом

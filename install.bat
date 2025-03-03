@@ -8,7 +8,7 @@ call venv\Scripts\activate.bat
 
 echo.
 echo Installing requirements...
-pip install -r requirements.txt
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 echo.
 echo Installation completed!

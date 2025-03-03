@@ -28,14 +28,14 @@ async def start():
     show_logo()
     show_dev_info()
 
-    print("\nAvailable options:\n")
-    print("[1] 😈 Start farm")
-    print("[2] 🔧 Edit config")
-    print("[3] 👋 Exit")
+    print("\n运行选项:\n")
+    print("[1] 😈 开始运行")
+    print("[2] 🔧 修改配置")
+    print("[3] 👋 退出")
     print()
 
     try:
-        choice = input("Enter option (1-3): ").strip()
+        choice = input("输入选项并回车 (1-3): ").strip()
     except Exception as e:
         logger.error(f"Input error: {e}")
         return

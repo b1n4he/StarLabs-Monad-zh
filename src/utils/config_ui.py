@@ -28,7 +28,7 @@ class ConfigUI:
         }
 
         self.root = ctk.CTk()
-        self.root.title("StarLabs Monad Configuration")
+        self.root.title("StarLabs Monad 配置")
         self.root.geometry("1250x800")
         self.root.minsize(1250, 800)  # Set minimum window size
         self.root.configure(fg_color=self.colors["bg"])
@@ -42,7 +42,7 @@ class ConfigUI:
         # Header on the left
         header = ctk.CTkLabel(
             header_frame,
-            text="🌟 StarLabs Monad Configuration",
+            text="🌟 StarLabs Monad 配置",
             font=("Helvetica", 24, "bold"),
             text_color=self.colors["accent"],
             anchor="w",
@@ -52,7 +52,7 @@ class ConfigUI:
         # Save button in the top right
         self.save_button = ctk.CTkButton(
             header_frame,
-            text="⚡ SAVE",  # Changed icon and made text uppercase
+            text="⚡ 保存",  # Changed icon and made text uppercase
             command=self._save_and_close,
             font=("Helvetica", 18, "bold"),  # Increased font size
             height=45,
@@ -321,7 +321,7 @@ class ConfigUI:
             buttons_frame,
             width=200,
             font=("Helvetica", 12),
-            placeholder_text="Enter new contract address",
+            placeholder_text="输入新的合约地址",
             fg_color=self.colors["entry_bg"],
             text_color=self.colors["text"],
             border_color=self.colors["accent"],
@@ -349,7 +349,7 @@ class ConfigUI:
         # Кнопки управления
         add_button = ctk.CTkButton(
             buttons_frame,
-            text="Add Contract",
+            text="增加合约",
             command=add_contract,
             font=("Helvetica", 12, "bold"),
             fg_color=self.colors["accent"],
@@ -361,7 +361,7 @@ class ConfigUI:
 
         remove_button = ctk.CTkButton(
             buttons_frame,
-            text="Remove Selected",
+            text="移除选择",
             command=remove_selected,
             font=("Helvetica", 12, "bold"),
             fg_color=self.colors["accent"],
@@ -374,315 +374,372 @@ class ConfigUI:
         return contracts_list
 
     def create_widgets(self):
-        # Create two columns using pack
+        """
+        创建界面上的所有控件，将其分为左右两列布局
+        """
+        # 创建一个框架用于包含左右两列，填充整个可用空间
         columns_frame = ctk.CTkFrame(self.scrollable_frame, fg_color=self.colors["bg"])
         columns_frame.pack(fill="both", expand=True)
 
+        # 创建左列框架
         left_column = ctk.CTkFrame(columns_frame, fg_color=self.colors["bg"])
         left_column.pack(side="left", fill="both", expand=True, padx=5)
 
+        # 创建右列框架
         right_column = ctk.CTkFrame(columns_frame, fg_color=self.colors["bg"])
         right_column.pack(side="left", fill="both", expand=True, padx=5)
 
-        # LEFT COLUMN
+        # 左列内容
 
-        # General Settings Category
-        self.create_category_header(left_column, "⚙️ GENERAL SETTINGS")
-        settings = self.create_section(left_column, "SETTINGS")
+        # 通用设置分类
+        self.create_category_header(left_column, "⚙️ 通用设置")
+        # 创建一个设置部分
+        settings = self.create_section(left_column, "设置")
+        # 创建线程数输入框
         self.threads_entry = self.create_single_input(
             settings,
-            "THREADS",
+            "线程数",
             self.config["SETTINGS"]["THREADS"],
             width=self.input_sizes["tiny"],
         )
+        # 创建尝试次数输入框
         self.attempts_entry = self.create_single_input(
             settings,
-            "ATTEMPTS",
+            "尝试次数",
             self.config["SETTINGS"]["ATTEMPTS"],
             width=self.input_sizes["tiny"],
         )
+        # 创建账户范围输入框
         self.acc_range_start, self.acc_range_end = self.create_range_inputs(
             settings,
-            "ACCOUNTS_RANGE",
+            "账户范围",
             self.config["SETTINGS"]["ACCOUNTS_RANGE"],
             width=self.input_sizes["tiny"],
         )
 
-        # Add EXACT_ACCOUNTS_TO_USE
+        # 添加精确使用的账户输入框
         self.exact_accounts = self.create_single_input(
             settings,
-            "EXACT_ACCOUNTS_TO_USE",
+            "精确使用的账户",
             ", ".join(map(str, self.config["SETTINGS"]["EXACT_ACCOUNTS_TO_USE"])),
             width=self.input_sizes["large"],
         )
 
+        # 创建尝试间暂停时间范围输入框
         self.pause_attempts_min, self.pause_attempts_max = self.create_range_inputs(
             settings,
-            "PAUSE_BETWEEN_ATTEMPTS",
+            "尝试间暂停时间",
             self.config["SETTINGS"]["PAUSE_BETWEEN_ATTEMPTS"],
             width=self.input_sizes["small"],
         )
+        # 创建交换间暂停时间范围输入框
         self.pause_swaps_min, self.pause_swaps_max = self.create_range_inputs(
             settings,
-            "PAUSE_BETWEEN_SWAPS",
+            "交换间暂停时间",
             self.config["SETTINGS"]["PAUSE_BETWEEN_SWAPS"],
             width=self.input_sizes["small"],
         )
+        # 创建账户间随机暂停时间范围输入框
         self.pause_accounts_min, self.pause_accounts_max = self.create_range_inputs(
             settings,
-            "RANDOM_PAUSE_BETWEEN_ACCOUNTS",
+            "账户间随机暂停时间",
             self.config["SETTINGS"]["RANDOM_PAUSE_BETWEEN_ACCOUNTS"],
             width=self.input_sizes["small"],
         )
+        # 创建操作间随机暂停时间范围输入框
         self.pause_actions_min, self.pause_actions_max = self.create_range_inputs(
             settings,
-            "RANDOM_PAUSE_BETWEEN_ACTIONS",
+            "操作间随机暂停时间",
             self.config["SETTINGS"]["RANDOM_PAUSE_BETWEEN_ACTIONS"],
             width=self.input_sizes["small"],
         )
+        # 创建初始化随机暂停时间范围输入框
         self.init_pause_min, self.init_pause_max = self.create_range_inputs(
             settings,
-            "RANDOM_INITIALIZATION_PAUSE",
+            "初始化随机暂停时间",
             self.config["SETTINGS"]["RANDOM_INITIALIZATION_PAUSE"],
             width=self.input_sizes["small"],
         )
+        # 创建浏览器暂停乘数输入框
         self.browser_multiplier = self.create_single_input(
             settings,
-            "BROWSER_PAUSE_MULTIPLIER",
+            "浏览器暂停乘数",
             self.config["SETTINGS"]["BROWSER_PAUSE_MULTIPLIER"],
             width=self.input_sizes["tiny"],
         )
 
-        # Add Telegram settings
+        # 添加Telegram设置
         self.telegram_ids = self.create_single_input(
             settings,
-            "TELEGRAM_USERS_IDS",
+            "Telegram用户ID",
             ", ".join(map(str, self.config["SETTINGS"]["TELEGRAM_USERS_IDS"])),
             width=self.input_sizes["large"],
         )
         self.telegram_token = self.create_single_input(
             settings,
-            "TELEGRAM_BOT_TOKEN",
+            "Telegram机器人令牌",
             self.config["SETTINGS"]["TELEGRAM_BOT_TOKEN"],
             width=self.input_sizes["extra_large"],
         )
 
-        # Faucets Category
-        self.create_category_header(left_column, "🚰 FAUCETS")
+        # 水龙头分类
+        self.create_category_header(left_column, "🚰 水龙头")
 
-        faucet = self.create_section(left_column, "FAUCET")
+        # 创建水龙头设置部分
+        faucet = self.create_section(left_column, "水龙头")
+        # 创建Capsolver API密钥输入框
         self.capsolver_key = self.create_single_input(
-            faucet, "CAPSOLVER_API_KEY", self.config["FAUCET"]["CAPSOLVER_API_KEY"]
+            faucet, "Capsolver API密钥", self.config["FAUCET"]["CAPSOLVER_API_KEY"]
         )
 
-        disperse = self.create_section(left_column, "DISPERSE")
+        # 创建分散设置部分
+        disperse = self.create_section(left_column, "分散")
+        # 创建分散最小余额范围输入框
         self.min_balance_min, self.min_balance_max = self.create_range_inputs(
             disperse,
-            "MIN_BALANCE_FOR_DISPERSE",
+            "分散最小余额",
             self.config["DISPERSE"]["MIN_BALANCE_FOR_DISPERSE"],
         )
 
-        # Swaps Category
-        self.create_category_header(left_column, "💱 SWAPS")
+        # 交换分类
+        self.create_category_header(left_column, "💱 交换")
 
-        flow = self.create_section(left_column, "FLOW")
+        # 创建交换流程设置部分
+        flow = self.create_section(left_column, "流程")
+        # 创建交换次数范围输入框
         self.swaps_min, self.swaps_max = self.create_range_inputs(
-            flow, "NUMBER_OF_SWAPS", self.config["FLOW"]["NUMBER_OF_SWAPS"]
+            flow, "交换次数", self.config["FLOW"]["NUMBER_OF_SWAPS"]
         )
+        # 创建交换余额百分比范围输入框
         self.balance_swap_min, self.balance_swap_max = self.create_range_inputs(
             flow,
-            "PERCENT_OF_BALANCE_TO_SWAP",
+            "交换余额百分比",
             self.config["FLOW"]["PERCENT_OF_BALANCE_TO_SWAP"],
         )
 
-        # NFT Category
+        # NFT分类
         self.create_category_header(left_column, "🎨 NFT")
 
-        # Add ACCOUNTABLE section
+        # 添加ACCOUNTABLE部分
         accountable = self.create_section(left_column, "ACCOUNTABLE")
+        # 创建每个账户NFT限制输入框
         self.accountable_limit = self.create_single_input(
             accountable,
-            "NFT_PER_ACCOUNT_LIMIT",
+            "每个账户NFT限制",
             self.config["ACCOUNTABLE"]["NFT_PER_ACCOUNT_LIMIT"],
             width=100,
         )
 
-        # Add LILCHOGSTARS section
-        lilchog = self.create_section(left_column, "LILCHOGSTARS")
+        # 添加LilChogStars部分
+        lilchog = self.create_section(left_column, "LilChogStars")
+        # 创建每个账户最大数量范围输入框
         self.lilchog_amount_min, self.lilchog_amount_max = self.create_range_inputs(
             lilchog,
-            "MAX_AMOUNT_FOR_EACH_ACCOUNT",
+            "每个账户最大数量",
             self.config["LILCHOGSTARS"]["MAX_AMOUNT_FOR_EACH_ACCOUNT"],
         )
 
-        # Add DEMASK section
-        demask = self.create_section(left_column, "DEMASK")
+        # 添加Demask部分
+        demask = self.create_section(left_column, "Demask")
+        # 创建每个账户最大数量范围输入框
         self.demask_amount_min, self.demask_amount_max = self.create_range_inputs(
             demask,
-            "MAX_AMOUNT_FOR_EACH_ACCOUNT",
+            "每个账户最大数量",
             self.config["DEMASK"]["MAX_AMOUNT_FOR_EACH_ACCOUNT"],
         )
 
-        # Add MONADKING section
-        monadking = self.create_section(left_column, "MONADKING")
+        # 添加MonadKing部分
+        monadking = self.create_section(left_column, "MonadKing")
+        # 创建每个账户最大数量范围输入框
         self.monadking_amount_min, self.monadking_amount_max = self.create_range_inputs(
             monadking,
-            "MAX_AMOUNT_FOR_EACH_ACCOUNT",
+            "每个账户最大数量",
             self.config["MONADKING"]["MAX_AMOUNT_FOR_EACH_ACCOUNT"],
         )
 
-        # Add MAGICEDEN section
-        magiceden = self.create_section(left_column, "MAGICEDEN")
+        # 添加MagicEden部分
+        magiceden = self.create_section(left_column, "MagicEden")
+        # 创建NFT合约列表输入框
         self.magiceden_contracts = self.create_nft_contracts_list(
             magiceden,
-            "NFT_CONTRACTS",
+            "NFT合约",
             self.config["MAGICEDEN"]["NFT_CONTRACTS"],
         )
 
-        # RIGHT COLUMN
+        # 右列内容
 
-        # Staking Category
-        self.create_category_header(right_column, "🥩 STAKING")
+        # 质押分类
+        self.create_category_header(right_column, "🥩 质押")
 
-        apriori = self.create_section(right_column, "APRIORI")
+        # 创建Apriori质押设置部分
+        apriori = self.create_section(right_column, "Apriori")
+        # 创建Apriori质押数量范围输入框
         self.apriori_stake_min, self.apriori_stake_max = self.create_range_inputs(
-            apriori, "AMOUNT_TO_STAKE", self.config["APRIORI"]["AMOUNT_TO_STAKE"]
+            apriori, "质押数量", self.config["APRIORI"]["AMOUNT_TO_STAKE"]
         )
 
-        magma = self.create_section(right_column, "MAGMA")
+        # 创建Magma质押设置部分
+        magma = self.create_section(right_column, "Magma")
+        # 创建Magma质押数量范围输入框
         self.magma_stake_min, self.magma_stake_max = self.create_range_inputs(
-            magma, "AMOUNT_TO_STAKE", self.config["MAGMA"]["AMOUNT_TO_STAKE"]
+            magma, "质押数量", self.config["MAGMA"]["AMOUNT_TO_STAKE"]
         )
 
-        kintsu = self.create_section(right_column, "KINTSU")
+        # 创建Kintsu质押设置部分
+        kintsu = self.create_section(right_column, "Kintsu")
+        # 创建Kintsu质押数量范围输入框
         self.kintsu_stake_min, self.kintsu_stake_max = self.create_range_inputs(
-            kintsu, "AMOUNT_TO_STAKE", self.config["KINTSU"]["AMOUNT_TO_STAKE"]
+            kintsu, "质押数量", self.config["KINTSU"]["AMOUNT_TO_STAKE"]
         )
 
-        shmonad = self.create_section(right_column, "SHMONAD")
+        # 创建Shmonad质押设置部分
+        shmonad = self.create_section(right_column, "Shmonad")
+        # 创建购买并质押Shmon复选框
         self.buy_stake = self.create_checkbox(
             shmonad,
-            "BUY_AND_STAKE_SHMON",
+            "购买并质押Shmon",
             self.config["SHMONAD"]["BUY_AND_STAKE_SHMON"],
         )
+        # 创建取消质押并出售Shmon复选框
         self.unstake_sell = self.create_checkbox(
             shmonad,
-            "UNSTAKE_AND_SELL_SHMON",
+            "取消质押并出售Shmon",
             self.config["SHMONAD"]["UNSTAKE_AND_SELL_SHMON"],
         )
+        # 创建Shmonad交换余额百分比范围输入框
         self.shmonad_percent_min, self.shmonad_percent_max = self.create_range_inputs(
             shmonad,
-            "PERCENT_OF_BALANCE_TO_SWAP",
+            "交换余额百分比",
             self.config["SHMONAD"]["PERCENT_OF_BALANCE_TO_SWAP"],
         )
 
-        # Bridge & Refuel Category
-        self.create_category_header(right_column, "🌉 BRIDGE & REFUEL")
+        # 桥接与GAS分类
+        self.create_category_header(right_column, "🌉 桥接与GAS")
 
-        # Add GASZIP section
-        gaszip = self.create_section(right_column, "GASZIP")
+        # 添加GasZip部分
+        gaszip = self.create_section(right_column, "GasZip")
+        # 创建GasZipGAS网络复选框
         self.gaszip_networks = self.create_network_checkboxes(
             gaszip,
-            "NETWORKS_TO_REFUEL_FROM",
+            "GAS网络",
             self.config["GASZIP"]["NETWORKS_TO_REFUEL_FROM"],
         )
+        # 创建GasZipGAS数量范围输入框
         self.gaszip_amount_min, self.gaszip_amount_max = self.create_range_inputs(
-            gaszip, "AMOUNT_TO_REFUEL", self.config["GASZIP"]["AMOUNT_TO_REFUEL"]
+            gaszip, "GAS数量", self.config["GASZIP"]["AMOUNT_TO_REFUEL"]
         )
+        # 创建GasZip最小GAS余额输入框
         self.gaszip_min_balance = self.create_single_input(
             gaszip,
-            "MINIMUM_BALANCE_TO_REFUEL",
+            "最小GAS余额",
             self.config["GASZIP"]["MINIMUM_BALANCE_TO_REFUEL"],
             width=self.input_sizes["tiny"],
         )
+        # 创建GasZip等待资金到达复选框
         self.gaszip_wait = self.create_checkbox(
             gaszip,
-            "WAIT_FOR_FUNDS_TO_ARRIVE",
+            "等待资金到达",
             self.config["GASZIP"]["WAIT_FOR_FUNDS_TO_ARRIVE"],
         )
+        # 创建GasZip最大等待时间输入框
         self.gaszip_wait_time = self.create_single_input(
             gaszip,
-            "MAX_WAIT_TIME",
+            "最大等待时间",
             self.config["GASZIP"]["MAX_WAIT_TIME"],
             width=self.input_sizes["tiny"],
         )
 
-        # Add MEMEBRIDGE section
-        memebridge = self.create_section(right_column, "MEMEBRIDGE")
+        # 添加MemeBridge部分
+        memebridge = self.create_section(right_column, "MemeBridge")
+        # 创建MemeBridgeGAS网络复选框
         self.memebridge_networks = self.create_network_checkboxes(
             memebridge,
-            "NETWORKS_TO_REFUEL_FROM",
+            "GAS网络",
             self.config["MEMEBRIDGE"]["NETWORKS_TO_REFUEL_FROM"],
         )
+        # 创建MemeBridgeGAS数量范围输入框
         self.memebridge_amount_min, self.memebridge_amount_max = (
             self.create_range_inputs(
                 memebridge,
-                "AMOUNT_TO_REFUEL",
+                "GAS数量",
                 self.config["MEMEBRIDGE"]["AMOUNT_TO_REFUEL"],
             )
         )
+        # 创建MemeBridge最小GAS余额输入框
         self.memebridge_min_balance = self.create_single_input(
             memebridge,
-            "MINIMUM_BALANCE_TO_REFUEL",
+            "最小GAS余额",
             self.config["MEMEBRIDGE"]["MINIMUM_BALANCE_TO_REFUEL"],
             width=self.input_sizes["tiny"],
         )
+        # 创建MemeBridge等待资金到达复选框
         self.memebridge_wait = self.create_checkbox(
             memebridge,
-            "WAIT_FOR_FUNDS_TO_ARRIVE",
+            "等待资金到达",
             self.config["MEMEBRIDGE"]["WAIT_FOR_FUNDS_TO_ARRIVE"],
         )
+        # 创建MemeBridge最大等待时间输入框
         self.memebridge_wait_time = self.create_single_input(
             memebridge,
-            "MAX_WAIT_TIME",
+            "最大等待时间",
             self.config["MEMEBRIDGE"]["MAX_WAIT_TIME"],
             width=self.input_sizes["tiny"],
         )
 
-        # Add TESTNET_BRIDGE section
-        testnet = self.create_section(right_column, "TESTNET_BRIDGE")
+        # 添加测试网桥接部分
+        testnet = self.create_section(right_column, "测试网桥接")
+        # 创建测试网桥接GAS网络复选框
         self.testnet_networks = self.create_network_checkboxes(
             testnet,
-            "NETWORKS_TO_REFUEL_FROM",
+            "GAS网络",
             self.config["TESTNET_BRIDGE"]["NETWORKS_TO_REFUEL_FROM"],
         )
+        # 创建测试网桥接GAS数量范围输入框
         self.testnet_amount_min, self.testnet_amount_max = self.create_range_inputs(
             testnet,
-            "AMOUNT_TO_REFUEL",
+            "GAS数量",
             self.config["TESTNET_BRIDGE"]["AMOUNT_TO_REFUEL"],
         )
+        # 创建测试网桥接最小GAS余额输入框
         self.testnet_min_balance = self.create_single_input(
             testnet,
-            "MINIMUM_BALANCE_TO_REFUEL",
+            "最小GAS余额",
             self.config["TESTNET_BRIDGE"]["MINIMUM_BALANCE_TO_REFUEL"],
             width=self.input_sizes["tiny"],
         )
+        # 创建测试网桥接等待资金到达复选框
         self.testnet_wait = self.create_checkbox(
             testnet,
-            "WAIT_FOR_FUNDS_TO_ARRIVE",
+            "等待资金到达",
             self.config["TESTNET_BRIDGE"]["WAIT_FOR_FUNDS_TO_ARRIVE"],
         )
+        # 创建测试网桥接最大等待时间输入框
         self.testnet_wait_time = self.create_single_input(
             testnet,
-            "MAX_WAIT_TIME",
+            "最大等待时间",
             self.config["TESTNET_BRIDGE"]["MAX_WAIT_TIME"],
             width=self.input_sizes["tiny"],
         )
 
-        orbiter = self.create_section(right_column, "ORBITER")
+        # 创建Orbiter桥接设置部分
+        orbiter = self.create_section(right_column, "Orbiter")
+        # 创建Orbiter桥接数量范围输入框
         self.orbiter_amount_min, self.orbiter_amount_max = self.create_range_inputs(
-            orbiter, "AMOUNT_TO_BRIDGE", self.config["ORBITER"]["AMOUNT_TO_BRIDGE"]
+            orbiter, "桥接数量", self.config["ORBITER"]["AMOUNT_TO_BRIDGE"]
         )
+        # 创建Orbiter全部桥接复选框
         self.bridge_all = self.create_checkbox(
-            orbiter, "BRIDGE_ALL", self.config["ORBITER"]["BRIDGE_ALL"]
+            orbiter, "全部桥接", self.config["ORBITER"]["BRIDGE_ALL"]
         )
+        # 创建Orbiter等待资金到达复选框
         self.orbiter_wait = self.create_checkbox(
             orbiter,
-            "WAIT_FOR_FUNDS_TO_ARRIVE",
+            "等待资金到达",
             self.config["ORBITER"]["WAIT_FOR_FUNDS_TO_ARRIVE"],
         )
+        # 创建Orbiter最大等待时间输入框
         self.orbiter_wait_time = self.create_single_input(
-            orbiter, "MAX_WAIT_TIME", self.config["ORBITER"]["MAX_WAIT_TIME"]
+            orbiter, "最大等待时间", self.config["ORBITER"]["MAX_WAIT_TIME"]
         )
 
     def _save_and_close(self):
